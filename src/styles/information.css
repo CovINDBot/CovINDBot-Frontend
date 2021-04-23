@@ -1,0 +1,123 @@
+.about {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin-left: 5%;
+  text-align: center;
+  margin-top: 100px;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid black;
+}
+
+.redirectForOfferRequest {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.requestBtn,
+.offerBtn {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  color: rgb(61, 61, 61);
+  flex-direction: column;
+  align-items: center;
+}
+
+.requestBtn {
+  border-right: 1px solid rgb(41, 41, 41);
+}
+
+.offerBtn {
+  border-left: 1px solid rgb(41, 41, 41);
+}
+
+.subtext_off_req {
+  margin-top: 1rem;
+  width: 80%;
+  color: gray;
+}
+
+.baseBtn {
+  margin-top: 2.5rem;
+  width: 200px;
+  height: 40px;
+  border-radius: 25px;
+  font-size: 15px;
+}
+
+.baseBtn:hover {
+  cursor: pointer;
+}
+
+.reqBtn {
+  background: rgba(255, 0, 0, 0.514);
+}
+
+.reqBtn:hover {
+  background: rgba(255, 0, 0, 0.814);
+  border: none;
+}
+
+.aidBtn {
+  background: rgba(0, 128, 0, 0.514);
+}
+
+.aidBtn:hover {
+  background: rgba(0, 128, 0, 0.814);
+  border: none;
+}
+
+.textOffReq {
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 750px) {
+  .about {
+    width: 94%;
+    margin-left: 3%;
+    font-size: 10px;
+    margin-top: 70px;
+    padding-bottom: 1.1rem;
+  }
+
+  .redirectForOfferRequest {
+    flex-direction: column;
+  }
+
+  .offerBtn {
+    border: none;
+    width: 90%;
+  }
+
+  .requestBtn {
+    border: none;
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+
+  .subtext_off_req {
+    width: 100%;
+  }
+
+  .textOffReq {
+    font-size: 18px;
+  }
+
+  .baseBtn {
+    margin-top: 1rem;
+    width: 150px;
+    height: 30px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  .redirectForOfferRequest {
+    margin-top: 0rem;
+  }
+}

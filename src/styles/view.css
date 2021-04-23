@@ -1,0 +1,27 @@
+.filterHead {
+  font-weight: 600;
+  font-size: larger;
+  color: rgb(61, 61, 61);
+}
+
+.filterRoot {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 2rem;
+}
+
+.filter_values {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: center;
+}
+
+.chips {
+  margin-left: 15px;
+}
+
+.applyBtnHolder {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
