@@ -14,14 +14,99 @@
   margin-top: 0.7rem;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .chips {
   margin-left: 15px;
+  margin-bottom: 10px;
 }
 
 .applyBtnHolder {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+}
+
+.filterList {
+  margin-top: 2rem;
+  width: 90%;
+  justify-content: center;
+  display: flex;
+  margin-left: 5%;
+}
+
+.dateFilter {
+  margin-top: 2rem;
+  width: 90%;
+  justify-content: center;
+  display: flex;
+  margin-left: 5%;
+}
+
+.dateIndFilter {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.filterTextOrSelect {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.textSelect {
+  width: 70%;
+}
+
+.amenityFilter {
+  margin-top: 2rem;
+  width: 95%;
+  justify-content: center;
+  display: flex;
+  margin-left: 2.5%;
+  flex-wrap: wrap;
+}
+
+.switchDes {
+  margin: 1rem;
+}
+
+.twitterBtn {
+  display: flex;
+  justify-content: center;
+  margin: 1.3rem;
+}
+
+.keepFooterAtBottom {
+  height: 0.4rem;
+}
+
+@media only screen and (max-width: 750px) {
+  .dateFilter,
+  .filterList {
+    flex-direction: column;
+  }
+
+  .dateIndFilter,
+  .filterTextOrSelect {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .amenityFilter {
+    margin-top: 2rem;
+    width: 99%;
+    justify-content: center;
+    display: flex;
+    margin-left: 0.5%;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .filterRoot {
+    width: 95%;
+    margin-left: 2.5%;
+  }
 }
