@@ -12,9 +12,9 @@ export const REQUEST_SERVICE_ISSUE = (uid) =>
   `mailto:siddharthsingharoy@gmail.com?subject=CovidINDBot Request Issue&body=Request ID : ${uid} <DO NOT CHANGE THIS>`;
 
 export const DEFAULT_FILTERS = {
-  location: "india",
+  location: "kolkata",
   amenities: ["ICU", "Bed"],
-  type: "Request",
+  type: "Aid",
   startDate: new Date(new Date().setDate(new Date().getDate() - 14)),
   endDate: new Date(),
 };

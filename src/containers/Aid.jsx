@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
 import { ExpandableTableRow } from "../components/ExpandableTableRow.jsx";
-import { prettyDate, getTextFromArray } from "../utils/humanize";
+import { prettyDate, getTextFromArray, humanize } from "../utils/humanize";
 import { AID_SERVICE_ISSUE } from "../constants";
 import "../styles/aid.css";
 
@@ -55,22 +55,26 @@ const Aid = ({ data }) => {
             <TableBody>
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => (
+                .map((row) => (
                   <ExpandableTableRow
-                    key={index}
-                    reportLink={AID_SERVICE_ISSUE(1231)}
+                    key={row.id}
+                    reportLink={AID_SERVICE_ISSUE(row.id)}
                     expandComponent={
                       <TableCell colSpan="5">{row.message}</TableCell>
                     }
                     reportText="Report issue with service"
                   >
                     <TableCell component="th" scope="row">
-                      {row.location}
+                      {row.location ? humanize(row.location) : "Not Provided"}
                     </TableCell>
                     <TableCell align="right">
-                      {getTextFromArray(row.amenity)}
+                      {row.amenity.length
+                        ? getTextFromArray(row.amenity)
+                        : "Not Provided"}
                     </TableCell>
-                    <TableCell align="right">{row.contact}</TableCell>
+                    <TableCell align="right">
+                      {row.contact ? row.contact : "Not Provided"}
+                    </TableCell>
                     <TableCell align="right">{prettyDate(row.date)}</TableCell>
                   </ExpandableTableRow>
                 ))}

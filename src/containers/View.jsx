@@ -17,6 +17,7 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import Select from "@material-ui/core/Select";
 import {
   KeyboardDatePicker,
@@ -48,10 +49,42 @@ const View = () => {
   const [currentFilters, setCurrentFilters] = useState(DEFAULT_FILTERS);
   const [hasChange, setHasChange] = useState(false);
   const [amenities, setAmenities] = useState([]);
+  const [availableLocations, setAvailableLocations] = useState([]);
   const [serviceData, setServiceData] = useState({
     type: "None",
     data: [],
   });
+
+  const fetchOfferData = async () => {
+    const params = {
+      location: currentFilters.location,
+      amenities: currentFilters.amenities,
+      startDate: currentFilters.startDate,
+      endDate: currentFilters.endDate,
+    };
+    const response = await getRequest("/offer", params);
+    const { data } = response;
+    const newOffers = data.data.map((offer) => {
+      const param = {};
+      param.id = offer.id;
+      param.date = new Date(offer.date_of_offer);
+      param.location = offer.location;
+      param.message = offer.message;
+      param.amenity = offer.Amenities.map((amenity) => amenity.amenity_name);
+      return param;
+    });
+    setServiceData({
+      type: "Aid",
+      data: newOffers,
+    });
+  };
+
+  const fetchData = async () => {
+    if (currentFilters.type === "Request") {
+    } else {
+      await fetchOfferData();
+    }
+  };
 
   const fetchAmenities = async () => {
     const response = await getRequest("/amenity");
@@ -59,8 +92,16 @@ const View = () => {
     setAmenities(data.data.map((amenity) => amenity.amenity_name));
   };
 
+  const fetchLocations = async () => {
+    const response = await getRequest("/location");
+    const { data } = response;
+    setAvailableLocations(data.data.map((location) => location.name));
+  };
+
   useEffect(() => {
     fetchAmenities();
+    fetchLocations();
+    fetchData();
   }, []);
 
   const handleClick = () => {
@@ -68,12 +109,15 @@ const View = () => {
   };
 
   const deleteAmenity = (amenityDel) => {
-    const newAmenities = currentFilters.amenities.filter((amenity) => {
+    let newAmenities = currentFilters.amenities.filter((amenity) => {
       if (amenity === amenityDel) return false;
       return true;
     });
     setHasChange(true);
-    setCurrentFilters({ ...currentFilters, amenities: newAmenities });
+    setCurrentFilters({
+      ...currentFilters,
+      amenities: newAmenities ? newAmenities : [],
+    });
   };
 
   const addToAmenity = (amenity) => {
@@ -137,6 +181,7 @@ const View = () => {
   const applyChanges = () => {
     setHasChange(false);
     setOpen(false);
+    fetchData();
   };
 
   const handleSwitchChange = (event, amenity) => {
@@ -203,21 +248,29 @@ const View = () => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <div className="filterList">
               <div className="filterTextOrSelect">
-                <TextField
-                  required
-                  variant="outlined"
-                  id="standard-required"
-                  label="Location"
-                  className="textSelect"
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={availableLocations}
+                  getOptionLabel={(option) => humanize(option)}
                   value={humanize(currentFilters.location)}
-                  onChange={(event) => {
+                  onInputChange={(event, newInputValue) => {
                     setHasChange(true);
                     setCurrentFilters({
                       ...currentFilters,
-                      location: event.target.value,
+                      location: newInputValue,
                     });
                   }}
-                  helperText="Please ensure that the spelling is correct"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      variant="outlined"
+                      id="standard-required"
+                      label="Location"
+                      className="textSelect"
+                      helperText="Please ensure that the spelling is correct"
+                    />
+                  )}
                 />
               </div>
               <div className="filterTextOrSelect">
@@ -313,7 +366,6 @@ const View = () => {
       {serviceData.type === "Request" && <Request data={serviceData.data} />}
       {serviceData.type === "Aid" && <Aid data={serviceData.data} />}
       {serviceData.type === "None" && <div className="keepFooterAtBottom" />}
-      <Request data={[]}/>
     </>
   );
 };
