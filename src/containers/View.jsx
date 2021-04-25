@@ -13,6 +13,7 @@ import Fab from "@material-ui/core/Fab";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -102,6 +103,7 @@ const View = () => {
     fetchAmenities();
     fetchLocations();
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = () => {
@@ -235,6 +237,19 @@ const View = () => {
     return twitterLink;
   };
 
+  const constructFBLink = () => {
+    const BASE_FACEBOOK = "https://www.facebook.com/search/posts/?q=";
+    let facebookLink = BASE_FACEBOOK;
+    if (currentFilters.type === "Request") facebookLink += `required%20`;
+    else facebookLink += `verified%20`;
+    facebookLink += currentFilters.location + "%20";
+    currentFilters.amenities.forEach((amenity, index) => {
+      facebookLink += amenity.toLowerCase() + "%20";
+    });
+    facebookLink = facebookLink.slice(0, facebookLink.length - 3);
+    return facebookLink;
+  };
+
   return (
     <>
       <div className="filterRoot">
@@ -254,10 +269,11 @@ const View = () => {
                   getOptionLabel={(option) => humanize(option)}
                   value={humanize(currentFilters.location)}
                   onInputChange={(event, newInputValue) => {
+                    if (currentFilters.location.toLowerCase() === newInputValue.toLowerCase()) return;
                     setHasChange(true);
                     setCurrentFilters({
                       ...currentFilters,
-                      location: newInputValue,
+                      location: newInputValue.toLowerCase(),
                     });
                   }}
                   renderInput={(params) => (
@@ -299,7 +315,7 @@ const View = () => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     margin="normal"
-                    id="date-picker-dialog"
+                    id="date-picker-dialog1"
                     label="Start Date"
                     format="MM/dd/yyyy"
                     value={currentFilters.startDate}
@@ -320,7 +336,7 @@ const View = () => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     margin="normal"
-                    id="date-picker-dialog"
+                    id="date-picker-dialog2"
                     label="End Date"
                     format="MM/dd/yyyy"
                     value={currentFilters.endDate}
@@ -351,13 +367,25 @@ const View = () => {
           </div>
         )}
       </div>
-      <div className="twitterBtn">
+      <div className="socialBtnHolder">
         <Button
           variant="outlined"
           color="primary"
+          className="socialBtn"
           startIcon={<TwitterIcon />}
           onClick={() => {
             window.location.href = constructTwitterLink();
+          }}
+        >
+          View Related Posts
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          startIcon={<FacebookIcon />}
+          className="socialBtn"
+          onClick={() => {
+            window.location.href = constructFBLink();
           }}
         >
           View Related Posts

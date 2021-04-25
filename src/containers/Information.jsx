@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/information.css";
 
 const Information = () => {
@@ -14,7 +15,9 @@ const Information = () => {
               <strong style={{ color: "red" }}>Request</strong> for others to
               help you
             </h3>
-            <button className="baseBtn reqBtn">Request Help</button>
+            <Link to="/request" style={{ textDecoration: "none" }}>
+              <button className="baseBtn reqBtn">Request Help</button>
+            </Link>
           </div>
           <div className="offerBtn">
             <h2 className="textOffReq">Provide Aid</h2>
@@ -24,9 +27,14 @@ const Information = () => {
               <strong style={{ color: "green" }}>Aid</strong> such that needy
               persons can contact you.
             </h3>
-            <button className="baseBtn aidBtn">Provide AID</button>
+            <Link to="/aid" style={{ textDecoration: "none" }}>
+              <button className="baseBtn aidBtn">Provide AID</button>
+            </Link>
           </div>
         </div>
+        <a href="/bot" style={{ textDecoration: "none" }}>
+          <button className="baseBtn botBtn">View Tweets on Twitter Bot</button>
+        </a>
       </div>
     </>
   );

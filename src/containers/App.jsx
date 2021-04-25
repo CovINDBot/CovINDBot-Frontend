@@ -1,20 +1,32 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Header } from "./Header.jsx";
-import { Footer } from "./Footer.jsx";
-import { Information } from "./Information.jsx";
-import { View } from "./View.jsx";
-import "../styles/app.css";
+import { HomePage } from "./HomePage.jsx";
+import { RequestDashboard } from "./RequestDashboard.jsx";
+import { AidDashboard } from "./AidDashboard.jsx";
+import { AuthenticatedRoute } from "../components/AuthenticatedRoute.jsx";
+import { TwitterBot } from "./TwitterBot.jsx";
+
 const App = () => {
   return (
     <>
-      <div className="app">
-        <Header />
-        <div className="information">
-          <Information />
-        </div>
-        <View />
-        <Footer />
-      </div>
+      <Header />
+      <Router>
+        <Switch>
+          <Route path="/request">
+            <AuthenticatedRoute renderComponent={RequestDashboard} />
+          </Route>
+          <Route path="/aid">
+            <AuthenticatedRoute renderComponent={AidDashboard} />
+          </Route>
+          <Route path="/bot">
+            <TwitterBot />
+          </Route>
+          <Route path="/">
+            <HomePage />
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 };

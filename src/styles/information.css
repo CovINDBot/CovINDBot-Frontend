@@ -73,6 +73,13 @@
   border: none;
 }
 
+.botBtn {
+  background: #4051b5;
+  color: white;
+  width: 250px;
+  height: 45px;
+}
+
 .textOffReq {
   text-decoration: underline;
 }

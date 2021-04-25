@@ -73,9 +73,9 @@
   margin: 1rem;
 }
 
-.twitterBtn {
+.socialBtnHolder {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 1.3rem;
 }
 
@@ -108,5 +108,13 @@
   .filterRoot {
     width: 95%;
     margin-left: 2.5%;
+  }
+
+  .socialBtnHolder {
+    flex-direction: column;
+  }
+
+  .socialBtn {
+    margin: 0.6rem !important;
   }
 }
