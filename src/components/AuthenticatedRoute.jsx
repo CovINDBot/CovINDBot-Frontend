@@ -4,9 +4,11 @@ import GoogleLogin from "react-google-login";
 const AuthenticatedRoute = ({ renderComponent }) => {
   const [googleResponse, setGoogleResponse] = useState(null);
   const responseGoogle = (response) => {
+    console.log(response);
     setGoogleResponse({
       googleID: response.tokenId,
       name: response.profileObj.name,
+      provided: "Google",
     });
   };
   if (!googleResponse) {
