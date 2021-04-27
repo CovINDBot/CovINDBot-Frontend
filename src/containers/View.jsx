@@ -276,9 +276,24 @@ const View = () => {
         twitterLink += amenityToAdd.toLowerCase() + "+OR+";
       }
     });
-    if (currentFilters.type === "Request")
-      twitterLink += "%29+-%22verified%22&f=live";
-    else twitterLink += "%29+-%22required%22&f=live";
+    twitterLink += "%29+";
+    if (currentFilters.type === "Request") {
+      ["verified", "verify", "verifies", "leads"].forEach((keyword) => {
+        twitterLink += `-${keyword}+`;
+      });
+    } else {
+      [
+        "required",
+        "needed",
+        "needs",
+        "requirements",
+        "requires",
+        "help",
+        "needs",
+      ].forEach((keyword) => {
+        twitterLink += `-${keyword}+`;
+      });
+    }
     return twitterLink;
   };
 
