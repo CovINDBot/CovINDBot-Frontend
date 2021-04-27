@@ -16,6 +16,7 @@ const TwitterBot = () => {
       </div>
       <div className="twitterBot">
         <h1 className="botHead">View Results of Twitter Bot</h1>
+        <p>Please refresh the page if the tweets aren't loaded</p>
         <div className="tweets">
           <a
             className="twitter-timeline"

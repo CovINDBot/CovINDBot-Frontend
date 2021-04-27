@@ -34,13 +34,15 @@ const Information = () => {
           </div>
         </div>
         <div className="additionalResource">
-          <a href="/bot" style={{ textDecoration: "none" }}>
+          <Link to="/bot" style={{ textDecoration: "none" }}>
             <button className="baseBtn botBtn">
               View Tweets on Twitter Bot
             </button>
-          </a>
+          </Link>
           <a href={RESOURCE_URL} style={{ textDecoration: "none" }}>
-            <button className="baseBtn resourceBtn">View Statewise Resources</button>
+            <button className="baseBtn resourceBtn">
+              View Statewise Resources
+            </button>
           </a>
         </div>
       </div>
