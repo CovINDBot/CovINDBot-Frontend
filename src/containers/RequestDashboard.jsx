@@ -16,7 +16,7 @@ import Alert from "@material-ui/lab/Alert";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Footer } from "./Footer.jsx";
 
-import { getRequest } from "../utils/serviceCall";
+import { getRequest, postRequest } from "../utils/serviceCall";
 import { humanize, getTextFromArray } from "../utils/humanize";
 
 import "../styles/createForm.css";
@@ -32,20 +32,22 @@ const SNACKBAR_INIT = {
   open: false,
   message: "",
   severity: "",
+  duration: 6000,
 };
 
-const RequestDashboard = () => {
+const RequestDashboard = ({ authResponse }) => {
   const [amenities, setAmenities] = useState([]);
   const [availableLocations, setAvailableLocations] = useState([]);
   const [currentRequest, setCurrentRequest] = useState(INIT_STATE);
   const [open, setOpen] = React.useState(false);
   const [snackbarInfo, setSnackBarInfo] = useState(SNACKBAR_INIT);
 
-  const handleSnackBarOpen = (message, severity) => {
+  const handleSnackBarOpen = (message, severity, duration = 6000) => {
     setSnackBarInfo({
       open: true,
       message,
       severity,
+      duration,
     });
   };
 
@@ -89,6 +91,27 @@ const RequestDashboard = () => {
     const response = await getRequest("/location");
     const { data } = response;
     setAvailableLocations(data.data.map((location) => location.name));
+  };
+
+  const addRequest = () => {
+    const request = {
+      message: currentRequest.message,
+      contact: currentRequest.contact,
+      location: currentRequest.location,
+      amenities: currentRequest.amenities,
+      token: authResponse.token,
+      authType: authResponse.provider,
+    };
+    postRequest("/request/protect/", request)
+      .then((res) => {
+        handleClose();
+        handleSnackBarOpen("Request has been added", "success", 10000);
+        setCurrentRequest(INIT_STATE)
+      })
+      .catch((err) => {
+        handleClose();
+        handleSnackBarOpen("Request could not be created", "error");
+      });
   };
 
   useEffect(() => {
@@ -145,7 +168,7 @@ const RequestDashboard = () => {
     <>
       <Snackbar
         open={snackbarInfo.open}
-        autoHideDuration={6000}
+        autoHideDuration={snackbarInfo.duration}
         onClose={handleSnackBarClose}
       >
         <Alert onClose={handleSnackBarClose} severity={snackbarInfo.severity}>
@@ -182,7 +205,7 @@ const RequestDashboard = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={addRequest} color="primary" autoFocus>
             Submit Request
           </Button>
         </DialogActions>

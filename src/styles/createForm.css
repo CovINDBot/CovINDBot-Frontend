@@ -68,3 +68,18 @@
 .wrap {
   white-space: pre-line;
 }
+
+@media only screen and (max-width: 750px) {
+  .formHolder {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+
+  .form-textfield {
+    width: 90%;
+  }
+
+  .form-multiline {
+    width: 90%;
+  }
+}

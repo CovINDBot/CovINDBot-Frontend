@@ -16,7 +16,7 @@ import Alert from "@material-ui/lab/Alert";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Footer } from "./Footer.jsx";
 
-import { getRequest } from "../utils/serviceCall";
+import { getRequest, postRequest } from "../utils/serviceCall";
 import { humanize, getTextFromArray } from "../utils/humanize";
 
 import "../styles/createForm.css";
@@ -32,20 +32,22 @@ const SNACKBAR_INIT = {
   open: false,
   message: "",
   severity: "",
+  duration: 6000,
 };
 
-const AidDashboard = () => {
+const AidDashboard = ({ authResponse }) => {
   const [amenities, setAmenities] = useState([]);
   const [availableLocations, setAvailableLocations] = useState([]);
   const [currentAid, setCurrentAid] = useState(INIT_STATE);
   const [open, setOpen] = React.useState(false);
   const [snackbarInfo, setSnackBarInfo] = useState(SNACKBAR_INIT);
 
-  const handleSnackBarOpen = (message, severity) => {
+  const handleSnackBarOpen = (message, severity, duration=6000) => {
     setSnackBarInfo({
       open: true,
       message,
       severity,
+      duration
     });
   };
 
@@ -89,6 +91,27 @@ const AidDashboard = () => {
     const response = await getRequest("/location");
     const { data } = response;
     setAvailableLocations(data.data.map((location) => location.name));
+  };
+
+  const addAid = () => {
+    const request = {
+      message: currentAid.message,
+      contact: currentAid.contact,
+      location: currentAid.location,
+      amenities: currentAid.amenities,
+      token: authResponse.token,
+      authType: authResponse.provider,
+    };
+    postRequest("/offer/protect/", request)
+      .then((res) => {
+        handleClose();
+        handleSnackBarOpen("Offer has been added", "success", 10000);
+        // setCurrentRequest(INIT_STATE)
+      })
+      .catch((err) => {
+        handleClose();
+        handleSnackBarOpen("Offer could not be created", "error");
+      });
   };
 
   useEffect(() => {
@@ -146,7 +169,7 @@ const AidDashboard = () => {
       <Snackbar
         open={snackbarInfo.open}
         autoHideDuration={6000}
-        onClose={handleSnackBarClose}
+        onClose={snackbarInfo.duration}
       >
         <Alert onClose={handleSnackBarClose} severity={snackbarInfo.severity}>
           {snackbarInfo.message}
@@ -163,14 +186,11 @@ const AidDashboard = () => {
           <DialogContentText id="alert-dialog-description">
             <h4 className="dialogInfo">
               Location :{" "}
-              <span className="checkInfo">
-                {humanize(currentAid.location)}
-              </span>
+              <span className="checkInfo">{humanize(currentAid.location)}</span>
             </h4>
 
             <h4 className="dialogInfo">
-              Contact :{" "}
-              <span className="checkInfo">{currentAid.contact}</span>
+              Contact : <span className="checkInfo">{currentAid.contact}</span>
             </h4>
             <h4 className="dialogInfo">Message</h4>
             <span className="wrap">{currentAid.message}</span>
@@ -182,7 +202,7 @@ const AidDashboard = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={addAid} color="primary" autoFocus>
             Submit Aid
           </Button>
         </DialogActions>

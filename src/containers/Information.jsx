@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { RESOURCE_URL } from "../constants";
 import "../styles/information.css";
 
 const Information = () => {
@@ -25,16 +26,23 @@ const Information = () => {
               If you have any relevant information regarding the supply of Covid
               amenities or you are a supplier yourself, you may create an{" "}
               <strong style={{ color: "green" }}>Aid</strong> such that needy
-              persons can contact you.
+              persons can contact the service.
             </h3>
             <Link to="/aid" style={{ textDecoration: "none" }}>
               <button className="baseBtn aidBtn">Provide AID</button>
             </Link>
           </div>
         </div>
-        <a href="/bot" style={{ textDecoration: "none" }}>
-          <button className="baseBtn botBtn">View Tweets on Twitter Bot</button>
-        </a>
+        <div className="additionalResource">
+          <a href="/bot" style={{ textDecoration: "none" }}>
+            <button className="baseBtn botBtn">
+              View Tweets on Twitter Bot
+            </button>
+          </a>
+          <a href={RESOURCE_URL} style={{ textDecoration: "none" }}>
+            <button className="baseBtn resourceBtn">View Statewise Resources</button>
+          </a>
+        </div>
       </div>
     </>
   );

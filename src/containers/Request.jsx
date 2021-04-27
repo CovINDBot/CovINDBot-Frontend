@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
 import { ExpandableTableRow } from "../components/ExpandableTableRow.jsx";
-import { prettyDate, getTextFromArray } from "../utils/humanize";
+import { prettyDate, getTextFromArray, humanize } from "../utils/humanize";
 import { REQUEST_SERVICE_ISSUE } from "../constants";
 import "../styles/request.css";
 
@@ -49,6 +49,7 @@ const Request = ({ data }) => {
                 <TableCell>Location</TableCell>
                 <TableCell align="right">Amenities Required</TableCell>
                 <TableCell align="right">Contact</TableCell>
+                <TableCell align="right">Message</TableCell>
                 <TableCell align="right">Date of Request</TableCell>
               </TableRow>
             </TableHead>
@@ -58,19 +59,30 @@ const Request = ({ data }) => {
                 .map((row, index) => (
                   <ExpandableTableRow
                     key={index}
-                    reportLink={REQUEST_SERVICE_ISSUE(1231)}
+                    reportLink={REQUEST_SERVICE_ISSUE(row.id)}
                     expandComponent={
                       <TableCell colSpan="5">{row.message}</TableCell>
                     }
                     reportText="Report issue with request"
                   >
                     <TableCell component="th" scope="row">
-                      {row.location}
+                      {row.location ? humanize(row.location) : "Not Provided"}
                     </TableCell>
                     <TableCell align="right">
-                      {getTextFromArray(row.amenity)}
+                      {row.amenity.length
+                        ? getTextFromArray(row.amenity)
+                        : "Not Provided"}
                     </TableCell>
-                    <TableCell align="right">{row.contact}</TableCell>
+                    <TableCell align="right">
+                      {row.contact ? row.contact : "Not Provided"}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.message
+                        ? row.message.length < 50
+                          ? row.message
+                          : row.message.slice(0, 50) + "..."
+                        : "Not Provided"}
+                    </TableCell>
                     <TableCell align="right">{prettyDate(row.date)}</TableCell>
                   </ExpandableTableRow>
                 ))}

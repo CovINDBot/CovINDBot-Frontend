@@ -18,3 +18,6 @@ export const DEFAULT_FILTERS = {
   startDate: new Date(new Date().setDate(new Date().getDate() - 14)),
   endDate: new Date(),
 };
+
+export const RESOURCE_URL =
+  "https://github.com/CovINDBot/CovINDBot-Resources#readme";

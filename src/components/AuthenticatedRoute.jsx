@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import GoogleLogin from "react-google-login";
 
 const AuthenticatedRoute = ({ renderComponent }) => {
-  const [googleResponse, setGoogleResponse] = useState(null);
+  const [authResponse, setAuthResponse] = useState(null);
   const responseGoogle = (response) => {
-    console.log(response);
-    setGoogleResponse({
-      googleID: response.tokenId,
+    setAuthResponse({
+      token: response.tokenId,
       name: response.profileObj.name,
-      provided: "Google",
+      provider: "Google",
     });
   };
-  if (!googleResponse) {
+  if (!authResponse) {
     return (
       <div
         style={{
@@ -37,7 +36,7 @@ const AuthenticatedRoute = ({ renderComponent }) => {
     );
   }
   const Component = renderComponent;
-  return <Component googleResponse={googleResponse} />;
+  return <Component authResponse={authResponse} />;
 };
 
 export { AuthenticatedRoute };

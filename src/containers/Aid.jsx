@@ -49,6 +49,7 @@ const Aid = ({ data }) => {
                 <TableCell>Location</TableCell>
                 <TableCell align="right">Amenities Provided</TableCell>
                 <TableCell align="right">Contact</TableCell>
+                <TableCell align="right">Message</TableCell>
                 <TableCell align="right">Date of Aid Offer</TableCell>
               </TableRow>
             </TableHead>
@@ -74,6 +75,13 @@ const Aid = ({ data }) => {
                     </TableCell>
                     <TableCell align="right">
                       {row.contact ? row.contact : "Not Provided"}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.message
+                        ? row.message.length < 50
+                          ? row.message
+                          : row.message.slice(0, 50) + "..."
+                        : "Not Provided"}
                     </TableCell>
                     <TableCell align="right">{prettyDate(row.date)}</TableCell>
                   </ExpandableTableRow>

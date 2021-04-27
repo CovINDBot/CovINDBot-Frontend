@@ -18,7 +18,7 @@ const TwitterBot = () => {
         <h1 className="botHead">View Results of Twitter Bot</h1>
         <div className="tweets">
           <a
-            class="twitter-timeline"
+            className="twitter-timeline"
             href="https://twitter.com/CovINDBot?ref_src=twsrc%5Etfw"
           >
             Tweets by CovINDBot

@@ -80,8 +80,20 @@
   height: 45px;
 }
 
+.resourceBtn {
+  width: 250px;
+  height: 45px;
+  border: 1px solid #4051b5;
+}
+
 .textOffReq {
   text-decoration: underline;
+}
+
+.additionalResource {
+  width: 80%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 @media only screen and (max-width: 750px) {
@@ -126,5 +138,14 @@
 
   .redirectForOfferRequest {
     margin-top: 0rem;
+  }
+
+  .additionalResource {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .resourceBtn, .botBtn {
+    width: 90%;
   }
 }

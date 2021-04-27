@@ -29,7 +29,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { Aid } from "./Aid.jsx";
 import { Request } from "./Request.jsx";
 
-import { humanize } from "../utils/humanize";
+import { humanize, prettyDate } from "../utils/humanize";
 import { getRequest } from "../utils/serviceCall";
 import { DEFAULT_FILTERS } from "../constants";
 import "../styles/view.css";
@@ -72,6 +72,7 @@ const View = () => {
       param.location = offer.location;
       param.message = offer.message;
       param.amenity = offer.Amenities.map((amenity) => amenity.amenity_name);
+      param.contact = offer.contact;
       return param;
     });
     setServiceData({
@@ -80,8 +81,34 @@ const View = () => {
     });
   };
 
+  const fetchRequestData = async () => {
+    const params = {
+      location: currentFilters.location,
+      amenities: currentFilters.amenities,
+      startDate: currentFilters.startDate,
+      endDate: currentFilters.endDate,
+    };
+    const response = await getRequest("/request", params);
+    const { data } = response;
+    const newRequests = data.data.map((request) => {
+      const param = {};
+      param.id = request.id;
+      param.date = new Date(request.date_of_request);
+      param.location = request.location;
+      param.message = request.message;
+      param.amenity = request.Amenities.map((amenity) => amenity.amenity_name);
+      param.contact = request.contact;
+      return param;
+    });
+    setServiceData({
+      type: "Request",
+      data: newRequests,
+    });
+  };
+
   const fetchData = async () => {
     if (currentFilters.type === "Request") {
+      fetchRequestData();
     } else {
       await fetchOfferData();
     }
@@ -145,6 +172,24 @@ const View = () => {
           setHasChange(true);
           setCurrentFilters({ ...currentFilters, type: switchType });
         }}
+      />
+    );
+
+    chipArray.push(
+      <Chip
+        key={counter++}
+        color="primary"
+        className="chips"
+        label={`Start Date : ${prettyDate(currentFilters.startDate)}`}
+      />
+    );
+
+    chipArray.push(
+      <Chip
+        key={counter++}
+        color="primary"
+        className="chips"
+        label={`End Date : ${prettyDate(currentFilters.endDate)}`}
       />
     );
 
@@ -269,7 +314,11 @@ const View = () => {
                   getOptionLabel={(option) => humanize(option)}
                   value={humanize(currentFilters.location)}
                   onInputChange={(event, newInputValue) => {
-                    if (currentFilters.location.toLowerCase() === newInputValue.toLowerCase()) return;
+                    if (
+                      currentFilters.location.toLowerCase() ===
+                      newInputValue.toLowerCase()
+                    )
+                      return;
                     setHasChange(true);
                     setCurrentFilters({
                       ...currentFilters,
