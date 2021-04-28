@@ -21,4 +21,4 @@ export const DEFAULT_FILTERS = {
 };
 
 export const RESOURCE_URL =
-  "https://github.com/CovINDBot/CovINDBot-Resources#readme";
+  "https://covindbot.github.io/CovINDBot-Resources/";
