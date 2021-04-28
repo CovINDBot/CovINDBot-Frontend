@@ -6,6 +6,7 @@ import { RequestDashboard } from "./RequestDashboard.jsx";
 import { AidDashboard } from "./AidDashboard.jsx";
 import { AuthenticatedRoute } from "../components/AuthenticatedRoute.jsx";
 import { TwitterBot } from "./TwitterBot.jsx";
+import { Search } from "./Search.jsx";
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
           </Route>
           <Route path="/bot">
             <TwitterBot />
+          </Route>
+          <Route path="/search">
+            <Search />
           </Route>
           <Route path="/">
             <HomePage />

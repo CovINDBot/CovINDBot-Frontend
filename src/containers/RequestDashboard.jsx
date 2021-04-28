@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
@@ -22,16 +21,17 @@ import { humanize, getTextFromArray } from "../utils/humanize";
 import "../styles/createForm.css";
 
 const INIT_STATE = {
-  location: "",
+  location: null,
   message: "",
   contact: "",
   amenities: [],
+  locationInp: null,
 };
 
 const SNACKBAR_INIT = {
   open: false,
   message: "",
-  severity: "",
+  severity: "error",
   duration: 6000,
 };
 
@@ -42,7 +42,7 @@ const RequestDashboard = ({ authResponse }) => {
   const [open, setOpen] = React.useState(false);
   const [snackbarInfo, setSnackBarInfo] = useState(SNACKBAR_INIT);
 
-  const handleSnackBarOpen = (message, severity, duration = 6000) => {
+  const handleSnackBarOpen = (message, severity = "error", duration = 6000) => {
     setSnackBarInfo({
       open: true,
       message,
@@ -59,7 +59,7 @@ const RequestDashboard = ({ authResponse }) => {
   };
 
   const handleClickOpen = () => {
-    if (!currentRequest.location) {
+    if (!currentRequest.locationInp) {
       handleSnackBarOpen("Location cannot be empty", "error");
       return;
     }
@@ -97,7 +97,7 @@ const RequestDashboard = ({ authResponse }) => {
     const request = {
       message: currentRequest.message,
       contact: currentRequest.contact,
-      location: currentRequest.location,
+      location: currentRequest.locationInp,
       amenities: currentRequest.amenities,
       token: authResponse.token,
       authType: authResponse.provider,
@@ -183,11 +183,11 @@ const RequestDashboard = ({ authResponse }) => {
       >
         <DialogTitle id="alert-dialog-title">Review Request</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          {/* <DialogContentText id="alert-dialog-description"> */}
             <h4 className="dialogInfo">
               Location :{" "}
               <span className="checkInfo">
-                {humanize(currentRequest.location)}
+                {humanize(currentRequest.locationInp)}
               </span>
             </h4>
 
@@ -199,7 +199,7 @@ const RequestDashboard = ({ authResponse }) => {
             <span className="wrap">{currentRequest.message}</span>
             <h4 className="dialogInfo">Amenities Required</h4>
             {getTextFromArray(currentRequest.amenities)}
-          </DialogContentText>
+          {/* </DialogContentText> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -226,17 +226,20 @@ const RequestDashboard = ({ authResponse }) => {
             options={availableLocations}
             getOptionLabel={(option) => humanize(option)}
             value={humanize(currentRequest.location)}
-            onInputChange={(_event, newInputValue) => {
-              if (
-                currentRequest.location.toLowerCase() ===
-                newInputValue.toLowerCase()
-              )
-                return;
+            onChange={(_event, newInputValue) => {
               setCurrentRequest({
                 ...currentRequest,
-                location: newInputValue.toLowerCase(),
+                location: newInputValue ? newInputValue.toLowerCase() : null,
+                locationInp: newInputValue ? newInputValue.toLowerCase() : null,
               });
             }}
+            onInputChange={(_event, newInputValue) => {
+              setCurrentRequest({
+                ...currentRequest,
+                locationInp: newInputValue ? newInputValue.toLowerCase() : null,
+              });
+            }}
+            freeSolo
             renderInput={(params) => (
               <TextField
                 {...params}

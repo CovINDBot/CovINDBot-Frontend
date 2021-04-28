@@ -58,7 +58,7 @@ const View = () => {
 
   const fetchOfferData = async () => {
     const params = {
-      location: currentFilters.location,
+      location: currentFilters.locationInp,
       amenities: currentFilters.amenities,
       startDate: currentFilters.startDate,
       endDate: currentFilters.endDate,
@@ -83,7 +83,7 @@ const View = () => {
 
   const fetchRequestData = async () => {
     const params = {
-      location: currentFilters.location,
+      location: currentFilters.locationInp,
       amenities: currentFilters.amenities,
       startDate: currentFilters.startDate,
       endDate: currentFilters.endDate,
@@ -193,16 +193,20 @@ const View = () => {
       />
     );
 
-    if (currentFilters.location) {
+    if (currentFilters.locationInp) {
       chipArray.push(
         <Chip
           key={counter++}
-          label={humanize(currentFilters.location)}
+          label={humanize(currentFilters.locationInp)}
           color="secondary"
           className="chips"
           onDelete={() => {
             setHasChange(true);
-            setCurrentFilters({ ...currentFilters, location: "" });
+            setCurrentFilters({
+              ...currentFilters,
+              locationInp: null,
+              location: null,
+            });
           }}
         />
       );
@@ -264,7 +268,8 @@ const View = () => {
     let twitterLink = BASE_TWITTER;
     if (currentFilters.type === "Request") twitterLink += `required+`;
     else twitterLink += `verified+`;
-    twitterLink += currentFilters.location + "+%28";
+    twitterLink +=
+      (currentFilters.locationInp ? currentFilters.locationInp : "") + "+%28";
     currentFilters.amenities.forEach((amenity, index) => {
       let amenityToAdd =
         amenity === "Tiffin, Groceries and other Supplies"
@@ -302,12 +307,20 @@ const View = () => {
     let facebookLink = BASE_FACEBOOK;
     if (currentFilters.type === "Request") facebookLink += `required%20`;
     else facebookLink += `verified%20`;
-    facebookLink += currentFilters.location + "%20";
+    facebookLink +=
+      (currentFilters.locationInp ? currentFilters.locationInp : "") + "%20";
     currentFilters.amenities.forEach((amenity, index) => {
       facebookLink += amenity.toLowerCase() + "%20";
     });
     facebookLink = facebookLink.slice(0, facebookLink.length - 3);
     return facebookLink;
+  };
+
+  const redirect_blank = (url) => {
+    const a = document.createElement("a");
+    a.target = "_blank";
+    a.href = url;
+    a.click();
   };
 
   return (
@@ -327,19 +340,37 @@ const View = () => {
                   id="combo-box-demo"
                   options={availableLocations}
                   getOptionLabel={(option) => humanize(option)}
-                  value={humanize(currentFilters.location)}
-                  onInputChange={(event, newInputValue) => {
+                  value={currentFilters.location}
+                  onChange={(event, newInputValue) => {
                     if (
+                      currentFilters.location &&
+                      newInputValue &&
                       currentFilters.location.toLowerCase() ===
-                      newInputValue.toLowerCase()
+                        newInputValue.toLowerCase()
                     )
                       return;
                     setHasChange(true);
                     setCurrentFilters({
                       ...currentFilters,
-                      location: newInputValue.toLowerCase(),
+                      location: newInputValue ? newInputValue.toLowerCase() : null,
+                      locationInp: newInputValue ? newInputValue.toLowerCase() : null,
                     });
                   }}
+                  onInputChange={(event, newInputValue) => {
+                    if (
+                      currentFilters.locationInp &&
+                      newInputValue &&
+                      currentFilters.locationInp.toLowerCase() ===
+                        newInputValue.toLowerCase()
+                    )
+                      return;
+                    setHasChange(true);
+                    setCurrentFilters({
+                      ...currentFilters,
+                      locationInp: newInputValue ? newInputValue.toLowerCase() : null,
+                    });
+                  }}
+                  freeSolo
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -438,7 +469,7 @@ const View = () => {
           className="socialBtn"
           startIcon={<TwitterIcon />}
           onClick={() => {
-            window.location.href = constructTwitterLink();
+            redirect_blank(constructTwitterLink());
           }}
         >
           View Related Posts
@@ -449,7 +480,7 @@ const View = () => {
           startIcon={<FacebookIcon />}
           className="socialBtn"
           onClick={() => {
-            window.location.href = constructFBLink();
+            redirect_blank(constructFBLink());
           }}
         >
           View Related Posts

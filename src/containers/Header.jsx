@@ -11,6 +11,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import Tooltip from "@material-ui/core/Tooltip";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import SearchIcon from "@material-ui/icons/Search";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import { GITHUB_REPOSITORY, TWITTER_LINK, MAIL_LINK } from "../constants";
 
@@ -95,6 +96,17 @@ const Header = () => {
               <span style={{ color: "lightgreen", fontWeight: 900 }}>D</span>Bot
             </Typography>
           )}
+          <Tooltip title="Search for leads">
+            <IconButton
+              className={classes.icon}
+              color="inherit"
+              aria-label="Search for leads"
+              edge="end"
+              onClick={() => window.location.href = "/search"}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Send a query">
             <IconButton
               className={classes.icon}

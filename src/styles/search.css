@@ -1,0 +1,70 @@
+.backToHomeHolder {
+  margin-top: 6rem;
+  width: 95%;
+  margin-left: 2.5%;
+}
+
+.backToHome {
+  display: flex;
+  align-items: center;
+}
+
+.backToHomeText {
+  margin-left: 1rem;
+}
+
+.search-formHolder {
+  width: 80%;
+  margin-left: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.search-formHead {
+  font-weight: 100;
+  text-decoration: underline;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-form-textfield {
+  width: 400px;
+  margin-top: 3rem;
+}
+
+.search-switchDes {
+  margin: 1rem;
+}
+
+.search-social-btns {
+  display: flex;
+  width: 50%;
+  justify-content: space-evenly;
+}
+
+
+
+@media only screen and (max-width: 750px) {
+  .search-formHolder {
+    width: 95%;
+    margin-left: 2.5%;
+    text-align: center;
+  }
+
+  .search-form-textfield {
+    width: 90%;
+  }
+
+  .search-social-btns {
+    flex-direction: column;
+    width: 90%;
+  }
+}

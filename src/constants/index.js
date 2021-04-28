@@ -17,6 +17,7 @@ export const DEFAULT_FILTERS = {
   type: "Aid",
   startDate: new Date(new Date().setDate(new Date().getDate() - 14)),
   endDate: new Date(),
+  locationInp: "kolkata",
 };
 
 export const RESOURCE_URL =

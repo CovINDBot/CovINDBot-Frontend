@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
@@ -22,16 +21,17 @@ import { humanize, getTextFromArray } from "../utils/humanize";
 import "../styles/createForm.css";
 
 const INIT_STATE = {
-  location: "",
+  location: null,
   message: "",
   contact: "",
   amenities: [],
+  locationInp: null,
 };
 
 const SNACKBAR_INIT = {
   open: false,
   message: "",
-  severity: "",
+  severity: "error",
   duration: 6000,
 };
 
@@ -42,12 +42,12 @@ const AidDashboard = ({ authResponse }) => {
   const [open, setOpen] = React.useState(false);
   const [snackbarInfo, setSnackBarInfo] = useState(SNACKBAR_INIT);
 
-  const handleSnackBarOpen = (message, severity, duration=6000) => {
+  const handleSnackBarOpen = (message, severity = "error", duration = 6000) => {
     setSnackBarInfo({
       open: true,
       message,
       severity,
-      duration
+      duration,
     });
   };
 
@@ -59,7 +59,7 @@ const AidDashboard = ({ authResponse }) => {
   };
 
   const handleClickOpen = () => {
-    if (!currentAid.location) {
+    if (!currentAid.locationInp) {
       handleSnackBarOpen("Location cannot be empty", "error");
       return;
     }
@@ -97,7 +97,7 @@ const AidDashboard = ({ authResponse }) => {
     const request = {
       message: currentAid.message,
       contact: currentAid.contact,
-      location: currentAid.location,
+      location: currentAid.locationInp,
       amenities: currentAid.amenities,
       token: authResponse.token,
       authType: authResponse.provider,
@@ -106,7 +106,7 @@ const AidDashboard = ({ authResponse }) => {
       .then((res) => {
         handleClose();
         handleSnackBarOpen("Offer has been added", "success", 10000);
-        // setCurrentRequest(INIT_STATE)
+        setCurrentAid(INIT_STATE);
       })
       .catch((err) => {
         handleClose();
@@ -168,8 +168,8 @@ const AidDashboard = ({ authResponse }) => {
     <>
       <Snackbar
         open={snackbarInfo.open}
-        autoHideDuration={6000}
-        onClose={snackbarInfo.duration}
+        autoHideDuration={snackbarInfo.duration}
+        onClose={handleSnackBarClose}
       >
         <Alert onClose={handleSnackBarClose} severity={snackbarInfo.severity}>
           {snackbarInfo.message}
@@ -183,20 +183,20 @@ const AidDashboard = ({ authResponse }) => {
       >
         <DialogTitle id="alert-dialog-title">Review Aid</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <h4 className="dialogInfo">
-              Location :{" "}
-              <span className="checkInfo">{humanize(currentAid.location)}</span>
-            </h4>
+          <h4 className="dialogInfo">
+            Location :{" "}
+            <span className="checkInfo">
+              {humanize(currentAid.locationInp)}
+            </span>
+          </h4>
 
-            <h4 className="dialogInfo">
-              Contact : <span className="checkInfo">{currentAid.contact}</span>
-            </h4>
-            <h4 className="dialogInfo">Message</h4>
-            <span className="wrap">{currentAid.message}</span>
-            <h4 className="dialogInfo">Amenities Offered</h4>
-            {getTextFromArray(currentAid.amenities)}
-          </DialogContentText>
+          <h4 className="dialogInfo">
+            Contact : <span className="checkInfo">{currentAid.contact}</span>
+          </h4>
+          <h4 className="dialogInfo">Message</h4>
+          <span className="wrap">{currentAid.message}</span>
+          <h4 className="dialogInfo">Amenities Offered</h4>
+          {getTextFromArray(currentAid.amenities)}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -223,17 +223,20 @@ const AidDashboard = ({ authResponse }) => {
             options={availableLocations}
             getOptionLabel={(option) => humanize(option)}
             value={humanize(currentAid.location)}
-            onInputChange={(_event, newInputValue) => {
-              if (
-                currentAid.location.toLowerCase() ===
-                newInputValue.toLowerCase()
-              )
-                return;
+            onChange={(_event, newInputValue) => {
               setCurrentAid({
                 ...currentAid,
-                location: newInputValue.toLowerCase(),
+                location: newInputValue ? newInputValue.toLowerCase() : null,
+                locationInp: newInputValue ? newInputValue.toLowerCase() : null,
               });
             }}
+            onInputChange={(_event, newInputValue) => {
+              setCurrentAid({
+                ...currentAid,
+                locationInp: newInputValue ? newInputValue.toLowerCase() : null,
+              });
+            }}
+            freeSolo
             renderInput={(params) => (
               <TextField
                 {...params}
