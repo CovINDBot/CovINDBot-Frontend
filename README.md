@@ -2,7 +2,7 @@
 
 ### Installation
 
-```
+```sh
 git clone https://github.com/CovINDBot/CovINDBot-Frontend.git
 cd CovINDBot-Frontend/
 npm install
@@ -12,7 +12,7 @@ Create .env file from example.env
 
 To run the server
 
-```
+```sh
 npm start
 ```
 
